@@ -58,5 +58,9 @@ function generateServer(db) {
 }
 
 ramlMocker.generate(options, function (requestsToMock) {
-    generateServer(_.reduce(_.map(requestsToMock, reqToDBEntry), _.extend, {}));
+    generateServer(_.reduce(_.map(requestsToMock, function(request) {
+        console.log('Mocking endpoint: %s %s', request.method.toUpperCase(), request.uri);
+
+        return reqToDBEntry(request);
+    }), _.extend, {}));
 });
